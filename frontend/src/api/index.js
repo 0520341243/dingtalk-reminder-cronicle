@@ -26,13 +26,9 @@ const getBaseURL = () => {
   if (import.meta.env.DEV) {
     return '/api'
   }
-  // 生产环境根据访问地址动态调整
-  const hostname = window.location.hostname
-  if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    return 'http://localhost:3000/api'
-  }
-  // 局域网或其他地址
-  return `http://${hostname}:3000/api`
+  // 生产环境 - 使用相对路径，避免跨域问题
+  // 因为前端和后端在同一个服务器上（Express静态文件服务）
+  return '/api'
 }
 
 // 创建axios实例

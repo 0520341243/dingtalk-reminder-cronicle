@@ -234,17 +234,11 @@ export function createMobileApiClient(config?: Partial<ApiClientConfig>): Mobile
   const getBaseURL = () => {
     // 开发环境
     if (process.env.NODE_ENV === 'development') {
-      return process.env.REACT_APP_API_URL || 'http://localhost:3000/api';
+      return process.env.REACT_APP_API_URL || '/api';
     }
     
-    // 生产环境
-    const hostname = window?.location?.hostname || 'localhost';
-    if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      return 'http://localhost:3000/api';
-    }
-    
-    // 局域网或其他地址
-    return `http://${hostname}:3000/api`;
+    // 生产环境 - 使用相对路径
+    return '/api';
   };
 
   return new MobileApiClient({

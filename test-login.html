@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试登录</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background: #409EFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #66b1ff;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .success {
+            background: #e7f5e7;
+            border: 1px solid #67c23a;
+        }
+        .error {
+            background: #fef0f0;
+            border: 1px solid #f56c6c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>钉钉提醒系统 - 登录测试</h1>
+        
+        <div class="test-section">
+            <h3>测试账号信息</h3>
+            <p>用户名: admin</p>
+            <p>密码: admin123</p>
+        </div>
+
+        <div class="test-section">
+            <h3>API测试</h3>
+            <button onclick="testDirectApi()">测试直接API调用</button>
+            <button onclick="testRelativeApi()">测试相对路径API</button>
+            <div id="apiResult" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>前端页面访问</h3>
+            <button onclick="window.open('http://localhost:5001', '_blank')">打开系统首页</button>
+            <p style="color: #666; font-size: 14px;">
+                请在新窗口中使用 admin/admin123 登录
+            </p>
+        </div>
+    </div>
+
+    <script>
+        async function testDirectApi() {
+            const resultDiv = document.getElementById('apiResult');
+            resultDiv.textContent = '正在测试直接API调用...';
+            
+            try {
+                const response = await fetch('http://localhost:5001/api/mongo/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: 'admin',
+                        password: 'admin123'
+                    })
+                });
+                
+                const data = await response.json();
+                resultDiv.className = 'result success';
+                resultDiv.textContent = '✅ 直接API调用成功!\n' + JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.textContent = '❌ 直接API调用失败: ' + error.message;
+            }
+        }
+
+        async function testRelativeApi() {
+            const resultDiv = document.getElementById('apiResult');
+            resultDiv.textContent = '正在测试相对路径API...';
+            
+            // 先访问主页面设置正确的origin
+            window.location.href = 'http://localhost:5001/test-login.html';
+            
+            setTimeout(async () => {
+                try {
+                    const response = await fetch('/api/mongo/auth/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            username: 'admin',
+                            password: 'admin123'
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    resultDiv.className = 'result success';
+                    resultDiv.textContent = '✅ 相对路径API调用成功!\n' + JSON.stringify(data, null, 2);
+                } catch (error) {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = '❌ 相对路径API调用失败: ' + error.message;
+                }
+            }, 100);
+        }
+    </script>
+</body>
+</html>
