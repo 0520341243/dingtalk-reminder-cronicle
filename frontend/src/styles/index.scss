@@ -1,0 +1,577 @@
+// 全局样式文件
+
+// 重置默认样式
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--el-text-color-primary);
+  background-color: var(--el-bg-color);
+}
+
+// 滚动条样式
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--el-fill-color-lighter);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--el-border-color-darker);
+  border-radius: 3px;
+  
+  &:hover {
+    background: var(--el-border-color-dark);
+  }
+}
+
+// 布局样式
+.layout-container {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.layout-header {
+  background: var(--el-bg-color);
+  border-bottom: 1px solid var(--el-border-color-light);
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+}
+
+.layout-sidebar {
+  background: var(--el-bg-color);
+  border-right: 1px solid var(--el-border-color-light);
+}
+
+.layout-content {
+  background: var(--el-fill-color-lighter);
+  padding: 16px;
+  overflow-y: auto;
+}
+
+// 页面容器
+.page-container {
+  background: var(--el-bg-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.page-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--el-border-color-lighter);
+  background: var(--el-bg-color);
+  
+  .page-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--el-text-color-primary);
+    margin: 0 0 8px 0;
+  }
+  
+  .page-description {
+    color: var(--el-text-color-regular);
+    font-size: 13px;
+    margin: 0;
+  }
+}
+
+.page-content {
+  padding: 20px;
+}
+
+// 卡片样式
+.card {
+  border: 1px solid var(--el-border-color-lighter);
+  border-radius: 8px;
+  background: var(--el-bg-color);
+  overflow: hidden;
+  
+  &.card-shadow {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  }
+}
+
+.card-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--el-border-color-lighter);
+  background: var(--el-fill-color-extra-light);
+  
+  .card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--el-text-color-primary);
+    margin: 0;
+  }
+}
+
+.card-body {
+  padding: 20px;
+}
+
+// 统计卡片
+.stat-card {
+  text-align: center;
+  padding: 24px 16px;
+  border: 1px solid var(--el-border-color-lighter);
+  border-radius: 8px;
+  background: var(--el-bg-color);
+  transition: all 0.3s;
+  
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+  
+  .stat-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+    
+    &.success { color: var(--el-color-success); }
+    &.warning { color: var(--el-color-warning); }
+    &.danger { color: var(--el-color-danger); }
+    &.info { color: var(--el-color-info); }
+    &.primary { color: var(--el-color-primary); }
+  }
+  
+  .stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--el-text-color-primary);
+    margin-bottom: 8px;
+  }
+  
+  .stat-label {
+    font-size: 14px;
+    color: var(--el-text-color-regular);
+  }
+}
+
+// 状态指示器
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: 6px;
+  }
+  
+  &.status-success {
+    background: var(--el-color-success-light-9);
+    color: var(--el-color-success);
+    
+    &::before {
+      background: var(--el-color-success);
+    }
+  }
+  
+  &.status-warning {
+    background: var(--el-color-warning-light-9);
+    color: var(--el-color-warning);
+    
+    &::before {
+      background: var(--el-color-warning);
+    }
+  }
+  
+  &.status-danger {
+    background: var(--el-color-danger-light-9);
+    color: var(--el-color-danger);
+    
+    &::before {
+      background: var(--el-color-danger);
+    }
+  }
+  
+  &.status-info {
+    background: var(--el-color-info-light-9);
+    color: var(--el-color-info);
+    
+    &::before {
+      background: var(--el-color-info);
+    }
+  }
+}
+
+// 工具类
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.mb-0 { margin-bottom: 0; }
+.mb-1 { margin-bottom: 8px; }
+.mb-2 { margin-bottom: 16px; }
+.mb-3 { margin-bottom: 24px; }
+.mb-4 { margin-bottom: 32px; }
+
+.mt-0 { margin-top: 0; }
+.mt-1 { margin-top: 8px; }
+.mt-2 { margin-top: 16px; }
+.mt-3 { margin-top: 24px; }
+.mt-4 { margin-top: 32px; }
+
+// 响应式断点变量
+$breakpoint-xs: 480px;
+$breakpoint-sm: 768px;
+$breakpoint-md: 992px;
+$breakpoint-lg: 1200px;
+
+// 移动端适配混合器
+@mixin mobile-only {
+  @media (max-width: #{$breakpoint-sm - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet-and-up {
+  @media (min-width: $breakpoint-sm) {
+    @content;
+  }
+}
+
+@mixin desktop-and-up {
+  @media (min-width: $breakpoint-md) {
+    @content;
+  }
+}
+
+// 移动端基础适配
+@include mobile-only {
+  // 基础布局
+  .layout-content {
+    padding: 8px;
+  }
+  
+  .page-content {
+    padding: 16px 12px;
+  }
+  
+  .card-body {
+    padding: 16px 12px;
+  }
+  
+  // 统计卡片移动端适配
+  .stat-card {
+    padding: 16px 12px;
+    margin-bottom: 12px;
+    
+    .stat-icon {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+    
+    .stat-value {
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+    
+    .stat-label {
+      font-size: 13px;
+    }
+  }
+  
+  // 表单移动端优化
+  .el-form-item {
+    margin-bottom: 16px;
+  }
+  
+  .el-input, .el-select, .el-date-picker {
+    width: 100% !important;
+  }
+  
+  // 按钮组移动端堆叠
+  .button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    
+    .el-button {
+      width: 100%;
+      margin-left: 0 !important;
+    }
+  }
+  
+  // 表格移动端隐藏，使用卡片替代
+  .el-table {
+    display: none;
+  }
+  
+  .mobile-card-list {
+    display: block;
+  }
+}
+
+// 桌面端显示表格，隐藏移动端卡片
+@include tablet-and-up {
+  .mobile-card-list {
+    display: none !important;
+  }
+  
+  .el-table, .desktop-table {
+    display: table !important;
+  }
+}
+
+// 移动端显示卡片，隐藏桌面端表格
+@include mobile-only {
+  .el-table, .desktop-table {
+    display: none !important;
+  }
+  
+  .mobile-card-list {
+    display: block !important;
+  }
+}
+
+// 移动端卡片列表样式
+.mobile-card-list {
+  display: none;
+  
+  .mobile-card-item {
+    background: var(--el-bg-color);
+    border: 1px solid var(--el-border-color-lighter);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      
+      .card-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--el-text-color-primary);
+        line-height: 1.4;
+        flex: 1;
+        margin-right: 8px;
+      }
+      
+      .card-actions {
+        display: flex;
+        gap: 4px;
+      }
+    }
+    
+    .card-content {
+      .card-field {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0;
+        border-bottom: 1px solid var(--el-border-color-extra-light);
+        
+        &:last-child {
+          border-bottom: none;
+        }
+        
+        .field-label {
+          font-size: 13px;
+          color: var(--el-text-color-regular);
+          min-width: 60px;
+        }
+        
+        .field-value {
+          font-size: 14px;
+          color: var(--el-text-color-primary);
+          text-align: right;
+          flex: 1;
+          margin-left: 8px;
+        }
+      }
+    }
+  }
+}
+
+// 移动端操作菜单
+.mobile-action-menu {
+  .el-dropdown-menu__item {
+    padding: 12px 16px;
+    font-size: 14px;
+    line-height: 1.4;
+    
+    .el-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+// 移动端模态框适配
+@include mobile-only {
+  .el-dialog {
+    width: calc(100vw - 20px) !important;
+    margin: 10px;
+    max-height: calc(100vh - 20px);
+    
+    .el-dialog__header {
+      padding: 16px;
+    }
+    
+    .el-dialog__body {
+      padding: 16px;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+    }
+    
+    .el-dialog__footer {
+      padding: 12px 16px;
+      
+      .el-button {
+        width: 48%;
+        
+        &:first-child {
+          margin-right: 4%;
+        }
+      }
+    }
+  }
+}
+
+// 触摸友好的交互元素
+@include mobile-only {
+  .el-button {
+    min-height: 44px;
+    padding: 12px 16px;
+    font-size: 14px;
+    border-radius: 8px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+  }
+  
+  .el-button--small {
+    min-height: 40px;
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+  
+  .el-button:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+  
+  .el-input__inner,
+  .el-textarea__inner {
+    min-height: 44px;
+    padding: 12px 16px;
+    font-size: 16px; // 防止iOS缩放
+    border-radius: 8px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .el-select .el-input__inner {
+    min-height: 44px;
+  }
+  
+  .el-checkbox,
+  .el-radio {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .el-checkbox__inner,
+  .el-radio__inner {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .el-checkbox__label,
+  .el-radio__label {
+    font-size: 16px;
+    padding-left: 8px;
+  }
+  
+  // 下拉菜单项触摸优化
+  .el-dropdown-menu__item {
+    min-height: 48px;
+    padding: 12px 16px;
+    font-size: 15px;
+    line-height: 1.4;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .el-dropdown-menu__item:active {
+    background-color: var(--el-color-primary-light-9);
+  }
+  
+  // 表格行触摸优化（如果显示）
+  .el-table__row {
+    min-height: 56px;
+  }
+  
+  .el-table__cell {
+    padding: 12px 8px;
+  }
+  
+  // 标签触摸区域优化
+  .el-tag {
+    min-height: 28px;
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+  
+  // 卡片触摸反馈
+  .el-card {
+    transition: all 0.3s ease;
+  }
+  
+  .el-card:active {
+    transform: scale(0.99);
+  }
+  
+  // 输入框聚焦样式优化
+  .el-input.is-focus .el-input__inner,
+  .el-textarea.is-focus .el-textarea__inner {
+    border-color: var(--el-color-primary);
+    box-shadow: 0 0 0 2px var(--el-color-primary-light-8);
+  }
+  
+  // 禁用双击缩放
+  * {
+    touch-action: manipulation;
+  }
+}

@@ -1,0 +1,138 @@
+version: '3.8'
+
+services:
+  # MongoDB数据库服务
+  mongodb:
+    image: mongo:6.0
+    container_name: dingtalk-reminder-mongodb
+    restart: unless-stopped
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER:-root}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD:-root123456}
+      - MONGO_INITDB_DATABASE=${MONGO_DB:-dingtalk-scheduler}
+      - TZ=Asia/Shanghai
+    volumes:
+      - mongodb_data:/data/db
+      - ./docker/mongo-init.js:/docker-entrypoint-initdb.d/init.js:ro
+    ports:
+      - "27017:27017"
+    command: mongod --auth
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - dingtalk-network
+
+  # 钉钉提醒系统主服务
+  dingtalk-reminder:
+    build: .
+    container_name: dingtalk-reminder-app
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-5001}:5001"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=5001
+      # MongoDB配置
+      - MONGODB_URL=mongodb://${MONGO_USER:-admin}:${MONGO_PASSWORD:-admin123456}@mongodb:27017/${MONGO_DB:-dingtalk-scheduler}?authSource=admin
+      - MONGO_HOST=mongodb
+      - MONGO_PORT=27017
+      - MONGO_DB=${MONGO_DB:-dingtalk-scheduler}
+      - MONGO_USER=${MONGO_USER:-admin}
+      - MONGO_PASSWORD=${MONGO_PASSWORD:-admin123456}
+      # JWT配置
+      - JWT_SECRET=${JWT_SECRET:-your_jwt_secret_change_in_production}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET:-your_jwt_refresh_secret_change_in_production}
+      - JWT_EXPIRY=${JWT_EXPIRY:-15m}
+      - JWT_REFRESH_EXPIRY=${JWT_REFRESH_EXPIRY:-7d}
+      # Redis配置（可选）
+      - REDIS_ENABLED=${REDIS_ENABLED:-false}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-redis123456}
+      - REDIS_DB=0
+      - CACHE_TTL=${CACHE_TTL:-3600}
+      # 日志配置
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      # 任务配置
+      - MAX_RETRY_COUNT=${MAX_RETRY_COUNT:-3}
+      - RETRY_INTERVAL=${RETRY_INTERVAL:-60}
+      # 监控阈值
+      - CPU_THRESHOLD=${CPU_THRESHOLD:-80}
+      - MEMORY_THRESHOLD=${MEMORY_THRESHOLD:-85}
+      - DISK_THRESHOLD=${DISK_THRESHOLD:-90}
+      - RESPONSE_TIME_THRESHOLD=${RESPONSE_TIME_THRESHOLD:-2000}
+      - ERROR_RATE_THRESHOLD=${ERROR_RATE_THRESHOLD:-5}
+      # 钉钉配置（可选，用于测试）
+      - DINGTALK_WEBHOOK=${DINGTALK_WEBHOOK:-}
+      - DINGTALK_SECRET=${DINGTALK_SECRET:-}
+    volumes:
+      - ./uploads:/app/backend/uploads
+      - ./logs:/app/backend/logs
+      - ./backups:/app/backend/backups
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - dingtalk-network
+    command: >
+      sh -c "
+        echo '⏳ 等待MongoDB完全启动...' &&
+        sleep 10 &&
+        echo '🚀 启动应用服务器...' &&
+        node app.js
+      "
+
+  # Redis缓存服务 (可选)
+  redis:
+    image: redis:7-alpine
+    container_name: dingtalk-reminder-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-redis123456}
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-redis123456}", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - dingtalk-network
+    profiles:
+      - with-redis
+
+  # Nginx反向代理 (可选，用于生产环境)
+  nginx:
+    image: nginx:alpine
+    container_name: dingtalk-reminder-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/nginx/ssl:/etc/nginx/ssl:ro
+      - ./docker/nginx/logs:/var/log/nginx
+    depends_on:
+      - dingtalk-reminder
+    networks:
+      - dingtalk-network
+    profiles:
+      - with-nginx
+
+volumes:
+  mongodb_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  dingtalk-network:
+    driver: bridge

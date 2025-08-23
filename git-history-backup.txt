@@ -1,0 +1,54 @@
+d750aaf 2025-08-23 21:22:34 +0800 wangmengbo <82537192@qq.com>
+优化一些细节,增加docker部署文件
+
+---
+1806a48 2025-08-23 20:53:18 +0800 wangmengbo <82537192@qq.com>
+完善了用户管理功能
+
+---
+bbd7ae7 2025-08-23 18:58:52 +0800 wangmengbo <82537192@qq.com>
+修复了任务关联问题
+
+---
+c053b94 2025-08-23 15:13:13 +0800 wangmengbo <82537192@qq.com>
+修复系统设置界面功能缺失的问题，优化任务界面布局和功能，优化仪表盘界面显示。
+
+---
+1211fd5 2025-08-22 22:02:40 +0800 wangmengbo <82537192@qq.com>
+feat: 完整实现钉钉提醒系统
+主要功能：
+- 实现完整的钉钉定时提醒系统
+- 支持MongoDB数据库存储
+- 集成Cronicle调度器进行任务调度
+- 支持Excel文件导入和工作表任务
+- 实现群组管理和消息发送功能
+
+前端优化：
+- 修复仪表盘数据显示问题
+- 修复群组管理页面字段兼容性
+- 修复任务管理批量操作
+- 修复系统设置页面状态显示
+- 优化API路径配置，支持MongoDB后端
+
+后端改进：
+- 实现JWT认证和刷新令牌机制
+- 添加CSRF保护和安全中间件
+- 实现调度器状态管理
+- 支持工作表任务执行
+- 添加执行日志记录
+
+技术栈：
+- 前端：Vue 3 + Vite + Element Plus
+- 后端：Node.js + Express + MongoDB
+- 调度：Cronicle + node-cron
+- 认证：JWT + Refresh Token
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+
+---
+fb31855 2025-08-09 17:43:51 +0800 wangmengbo <82537192@qq.com>
+8.9.17:00
+
+---
